@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050914">
+<title>CSS Button Animation</title>
+<style>
+:root{--bg:#050914;--card:#09111f;--line:#172437;--text:#eaf2ff;--muted:#8794a9;--cyan:#00d9ff;--purple:#c084fc;--orange:#f59e0b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#02050c;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;padding:26px 14px 48px}
+h1{text-align:center;margin:0 auto 25px;font-size:clamp(25px,4vw,36px);letter-spacing:-.8px;color:#a8caff;text-shadow:0 0 12px #3d8fff90}
+main{width:min(100%,760px);margin:auto;border:2px solid #f28a25;padding:10px;background:#030914}
+.demo-card{overflow:hidden;border:1px solid #18263a;border-radius:13px;background:linear-gradient(145deg,#0b1423,#070e1a);margin-bottom:13px;box-shadow:0 10px 25px #0005}
+.demo-card:last-child{margin-bottom:0}
+.preview{min-height:132px;padding:19px 22px 16px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+h2{font-size:13px;margin:0;color:#f0f4fb;font-weight:750}
+.desc{font-size:9px;color:#8390a4;margin:4px 0 0}
+.action-row{display:grid;place-items:center;min-height:58px}
+.play{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:106px;height:31px;padding:0 17px;border-radius:30px;border:1px solid var(--cyan);background:#07111e;color:#fff;font-size:8px;font-weight:850;letter-spacing:.25px;cursor:pointer;transition:all .35s ease;isolation:isolate}
+.triangle{display:inline-block;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid var(--cyan);transition:transform .35s ease,filter .35s ease}
+.code-head{height:31px;padding:9px 13px;border-top:1px solid #18263a;border-bottom:1px solid #142033;display:flex;align-items:center;justify-content:space-between;color:#aebbd0;font-size:8px;font-weight:650}
+.dots{display:flex;gap:4px}.dots i{width:5px;height:5px;border-radius:50%;display:block;background:#ff5d62}.dots i:nth-child(2){background:#ffbf47}.dots i:nth-child(3){background:#42d66b}
+pre{margin:0;padding:15px 14px 18px;min-height:108px;overflow-x:auto;white-space:pre-wrap;color:#a9c9ef;background:#070e19;font:9px/1.65 "SFMono-Regular",Consolas,monospace}
+.comment{color:#73859d}.selector{color:#66b8ff}.prop{color:#a5d6ff}.value{color:#e9c77a}
+.fill .play{border-color:#00d9ff}
+.fill .play:before{content:"";position:absolute;z-index:-1;inset:0;background:#00d9ff;border-radius:inherit;transform:translateX(-105%);transition:transform .45s ease}
+.fill .play:hover:before{transform:translateX(0)}
+.fill .play:hover{color:#03131b;box-shadow:0 0 28px rgba(0,217,255,.35)}
+.fill .play:hover .triangle{border-left-color:#03131b;transform:translateX(5px)}
+.pulse .play{border-color:#c084fc;box-shadow:0 0 16px rgba(192,132,252,.2);background:rgba(192,132,252,.08)}
+.pulse .play:hover{animation:pulseGlow 1s infinite;background:rgba(192,132,252,.08)}
+.pulse .play:hover .triangle{transform:scale(1.3);filter:drop-shadow(0 0 9px #c084fc)}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 5px rgba(192,132,252,.2)}50%{box-shadow:0 0 30px rgba(192,132,252,.75)}}
+.draw .play{border:0;background:transparent}
+.draw .play:before,.draw .play:after{content:"";position:absolute;inset:0;border:2px solid transparent;border-radius:inherit;clip-path:inset(0 100% 0 0);transition:clip-path .5s ease}
+.draw .play:before{border-color:#fb7185}
+.draw .play:after{border-color:#f59e0b;clip-path:inset(0 0 0 100%)}
+.draw .play:hover:before,.draw .play:hover:after{clip-path:inset(0)}
+.draw .play:hover .triangle{filter:drop-shadow(0 0 7px #fb7185)}
+.pop .play{border-color:#26374e;background:linear-gradient(145deg,#142033,#08101c);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 0 #02050a,0 15px 25px rgba(0,0,0,.35)}
+.pop .play:hover{transform:translateY(-5px) scale(1.04);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 14px 0 #02050a,0 25px 35px rgba(132,204,22,.18)}
+.pop .triangle{border-left-color:#84cc16}
+.pop .play:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #02050a}
+.rotate .play{border-color:#00d9ff}
+.rotate .play:hover{box-shadow:0 0 28px rgba(34,211,238,.35)}
+.rotate .play:hover .triangle{animation:rotateTriangle .8s linear infinite}
+@keyframes rotateTriangle{to{transform:rotate(360deg)}}
+@media(max-width:480px){body{padding:18px 9px 30px}main{padding:7px}.preview{padding:17px 14px}pre{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<h1>CSS Button Animation</h1>
+<main>
+<section class="demo-card fill">
+<div class="preview"><div><h2>Fill Slide</h2><p class="desc">Hover to slide the color across the button.</p></div><div class="action-row"><button class="play"><span class="triangle"></span>PLAY NOW</button></div></div>
+<div class="code-head"><span>CSS · Fill Slide · :hover</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre><span class="comment">/* Fill Slide */</span>
+
+<span class="selector">.fill:before</span> {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #00d9ff;
+  transform: translateX(-105%);
+  transition: transform .45s ease;
+}
+
+<span class="selector">.fill:hover:before</span> {
+  transform: translateX(0);
+}
+
+<span class="selector">.fill:hover</span> {
+  color: #03131b;
+  box-shadow: 0 0 28px rgba(0,217,255,.35);
+}
+
+<span class="selector">.fill:hover .triangle</span> {
+  transform: translateX(5px);
+}</pre>
+</section>
+
+<section class="demo-card pulse">
+<div class="preview"><div><h2>Pulse Glow</h2><p class="desc">Hover to create a continuous neon glow.</p></div><div class="action-row"><button class="play"><span class="triangle"></span>PLAY NOW</button></div></div>
+<div class="code-head"><span>CSS · Pulse Glow · :hover</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre><span class="comment">/* Pulse Glow */</span>
+
+<span class="selector">.pulse:hover</span> {
+  animation: pulseGlow 1s infinite;
+  background: rgba(192,132,252,.08);
+}
+
+<span class="selector">.pulse:hover .triangle</span> {
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 9px #c084fc);
+}
+
+<span class="selector">@keyframes pulseGlow</span> {
+  0%,100% {
+    box-shadow: 0 0 5px rgba(192,132,252,.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(192,132,252,.75);
+  }
+}</pre>
+</section>
+
+<section class="demo-card draw">
+<div class="preview"><div><h2>Border Draw</h2><p class="desc">Hover to draw an animated double border.</p></div><div class="action-row"><button class="play"><span class="triangle"></span>PLAY NOW</button></div></div>
+<div class="code-head"><span>CSS · Border Draw · :hover</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre><span class="comment">/* Border Draw */</span>
+
+<span class="selector">.draw</span> {
+  border-color: transparent;
+}
+
+<span class="selector">.draw:before</span> {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid #fb7185;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path .5s ease;
+}
+
+<span class="selector">.draw:after</span> {
+  content: "";
+  inset: 0;
+  border: 2px solid #f59e0b;
+  clip-path: inset(0 0 0 100%);
+}
+
+<span class="selector">.draw:hover:before,
+.draw:hover:after</span> {
+  clip-path: inset(0);
+}</pre>
+</section>
+
+<section class="demo-card pop">
+<div class="preview"><div><h2>3D Pop</h2><p class="desc">Hover and click for a realistic 3D button.</p></div><div class="action-row"><button class="play"><span class="triangle"></span>PLAY NOW</button></div></div>
+<div class="code-head"><span>CSS · 3D Pop · :hover</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre><span class="comment">/* 3D Pop */</span>
+
+<span class="selector">.pop</span> {
+  background: linear-gradient(145deg,#142033,#08101c);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 8px 0 #02050a,
+    0 15px 25px rgba(0,0,0,.35);
+}
+
+<span class="selector">.pop:hover</span> {
+  transform: translateY(-5px) scale(1.04);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 14px 0 #02050a,
+    0 25px 35px rgba(132,204,22,.18);
+}</pre>
+</section>
+
+<section class="demo-card rotate">
+<div class="preview"><div><h2>Rotate Loop</h2><p class="desc">Hover to rotate the triangle continuously.</p></div><div class="action-row"><button class="play"><span class="triangle"></span>PLAY NOW</button></div></div>
+<div class="code-head"><span>CSS · Rotate Loop · :hover</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre><span class="comment">/* Rotate Loop */</span>
+
+<span class="selector">.rotate:hover</span> {
+  box-shadow: 0 0 28px rgba(34,211,238,.35);
+}
+
+<span class="selector">.rotate:hover .triangle</span> {
+  animation: rotateTriangle .8s linear infinite;
+}
+
+<span class="selector">@keyframes rotateTriangle</span> {
+  to {
+    transform: rotate(360deg);
+  }
+}</pre>
+</section>
+</main>
+</body>
+</html>
